@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Live Code Editor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fira Code', monospace;
+      background: #1e1e2f;
+      color: #fff;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+    }
+
+    .left {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      background: #252537;
+      border-right: 3px solid #00ffc8;
+      overflow-y: auto;
+    }
+
+    .left label {
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #00ffc8;
+    }
+
+    textarea {
+      background: #1e1e2f;
+      color: #fff;
+      border: 1px solid #00ffc8;
+      border-radius: 5px;
+      padding: 10px;
+      resize: vertical;
+      min-height: 120px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #ff00aa;
+      box-shadow: 0 0 10px #ff00aa;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 10px;
+      background: #00ffc8;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff00aa;
+      color: #fff;
+      box-shadow: 0 0 10px #ff00aa;
+    }
+
+    .right {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    .right label {
+      font-weight: bold;
+      color: #ff00aa;
+    }
+
+    iframe {
+      flex: 1;
+      border: 2px solid #00ffc8;
+      border-radius: 5px;
+      background: #fff;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <label><i class="fa-brands fa-html5"></i> HTML</label>
+      <textarea id="html-code"></textarea>
+
+      <label><i class="fa-brands fa-css3-alt"></i> CSS</label>
+      <textarea id="css-code"></textarea>
+
+      <label><i class="fa-brands fa-js"></i> JavaScript</label>
+      <textarea id="js-code"></textarea>
+
+      <div class="buttons">
+        <button onclick="run()"><i class="fa-solid fa-play"></i> Run</button>
+        <button onclick="resetCode()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+        <button onclick="copyCode()"><i class="fa-solid fa-copy"></i> Copy All</button>
+      </div>
+    </div>
+
+    <div class="right">
+      <label><i class="fa-solid fa-play"></i> Output</label>
+      <iframe id="output"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function run() {
+      let htmlCode = document.getElementById("html-code").value;
+      let cssCode = document.getElementById("css-code").value;
+      let jsCode = document.getElementById("js-code").value;
+      let output = document.getElementById("output");
+
+      output.srcdoc = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>${cssCode}</style>
+        </head>
+        <body>
+          ${htmlCode}
+          <script>${jsCode}<\/script>
+        </body>
+        </html>
+      `;
+    }
+
+    function resetCode() {
+      document.getElementById("html-code").value = "";
+      document.getElementById("css-code").value = "";
+      document.getElementById("js-code").value = "";
+      document.getElementById("output").srcdoc = "";
+    }
+
+    function copyCode() {
+      let allCode = 
+        "HTML:\\n" + document.getElementById("html-code").value + 
+        "\\n\\nCSS:\\n" + document.getElementById("css-code").value + 
+        "\\n\\nJavaScript:\\n" + document.getElementById("js-code").value;
+
+      navigator.clipboard.writeText(allCode);
+      alert("Code copied to clipboard!");
+    }
+  </script>
+</body>
+</html>
